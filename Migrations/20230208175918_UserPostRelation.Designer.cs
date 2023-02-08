@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialMedia.Data;
 
@@ -10,9 +11,10 @@ using SocialMedia.Data;
 namespace SocialMedia.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230208175918_UserPostRelation")]
+    partial class UserPostRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.13");
@@ -265,7 +267,6 @@ namespace SocialMedia.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("applicationUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -345,9 +346,7 @@ namespace SocialMedia.Migrations
                 {
                     b.HasOne("SocialMedia.Areas.Identity.Data.ApplicationUser", "applicationUser")
                         .WithMany("Posts")
-                        .HasForeignKey("applicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("applicationUserId");
 
                     b.Navigation("applicationUser");
                 });
