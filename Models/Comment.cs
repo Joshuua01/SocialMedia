@@ -13,6 +13,8 @@ namespace SocialMedia.Models
         public DateTime CreationDate { get; set; } = DateTime.Now;
         [Required]
         public ApplicationUser applicationUser { get; set; }
+        [Required]
+        public Post post { get; set; }
 
     }
 }

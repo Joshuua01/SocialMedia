@@ -16,5 +16,6 @@ namespace SocialMedia.Models
         public DateTime CreationDate { get; set; } = DateTime.Now;
         [Required]
         public ApplicationUser applicationUser { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }
