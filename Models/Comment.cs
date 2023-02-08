@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SocialMedia.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace SocialMedia.Models
 {
@@ -10,6 +11,8 @@ namespace SocialMedia.Models
         [MaxLength(255)]
         public string Content { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
+        [Required]
+        public ApplicationUser applicationUser { get; set; }
 
     }
 }
