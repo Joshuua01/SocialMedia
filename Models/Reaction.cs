@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SocialMedia.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace SocialMedia.Models
 {
@@ -11,8 +12,11 @@ namespace SocialMedia.Models
     {
         public int Id { get; set; }
         [Required]
-        
         public ReactionType reactionType { get; set; }
-        
+        [Required]
+        public ApplicationUser ApplicationUser { get; set; }
+        [Required]
+        public Post Post { get; set; }
+
     }
 }
