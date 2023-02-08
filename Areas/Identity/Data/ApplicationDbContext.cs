@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Areas.Identity.Data;
+using SocialMedia.Models;
 
 namespace SocialMedia.Data;
 
@@ -11,6 +12,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
+
+    public DbSet<Post> Posts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
