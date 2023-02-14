@@ -14,8 +14,7 @@ namespace SocialMedia.Models
         [MaxLength(1024)]
         public string Content { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
-        [Required]
-        public ApplicationUser applicationUser { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public ApplicationUser? applicationUser { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

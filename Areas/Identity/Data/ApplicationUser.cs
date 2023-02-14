@@ -18,8 +18,8 @@ public class ApplicationUser : IdentityUser
     [MaxLength(255)]
     public string LastName { get; set; }
     public DateTime CreationDate { get; set; } = DateTime.Now;
-    public ICollection<Post> Posts { get; set; }
-    public ICollection<Comment> Comments { get; set; }
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
 }
 
