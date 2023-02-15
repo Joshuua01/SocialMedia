@@ -46,14 +46,14 @@ namespace SocialMedia.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "a55294c9-8b9b-46a1-97c6-a1aa4d2688b2",
+                            ConcurrencyStamp = "7442358f-5367-43c6-8bcd-0d1b5c414352",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7211",
-                            ConcurrencyStamp = "87dabac9-d416-4f6f-927d-902e90cda4a6",
+                            ConcurrencyStamp = "9ba462cc-4218-4218-a4c6-5021dc731459",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -258,8 +258,8 @@ namespace SocialMedia.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6a186373-8779-4577-9ef9-3600446062fa",
-                            CreationDate = new DateTime(2023, 2, 14, 17, 24, 14, 723, DateTimeKind.Local).AddTicks(6352),
+                            ConcurrencyStamp = "3a4890dc-7290-47ee-bd72-9e90ac9f3643",
+                            CreationDate = new DateTime(2023, 2, 15, 16, 41, 9, 199, DateTimeKind.Local).AddTicks(179),
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -267,10 +267,10 @@ namespace SocialMedia.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKjj0/VFOxPd+KQAFcwydVPb1lYCtsWWFRAIYg36Ck2MurFk2wd/bjwGjurm3JY3lg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDn+T9bC0m4Yk6GkPCv6VhBcgS9HP/PoNHHhbhGM6N5JUXfHGU8Zvi9mZxBSg8cixg==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "35f24f41-a554-47ce-abf6-0def4c48f825",
+                            SecurityStamp = "9d2000b8-4be0-4d7d-9a98-f89bdb354593",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.admin"
                         },
@@ -278,8 +278,8 @@ namespace SocialMedia.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "47c1fa1b-0a42-4343-846f-c5074ee7c070",
-                            CreationDate = new DateTime(2023, 2, 14, 17, 24, 14, 731, DateTimeKind.Local).AddTicks(3556),
+                            ConcurrencyStamp = "a7162ebe-76c1-45e3-98d0-f0d0feaed1bf",
+                            CreationDate = new DateTime(2023, 2, 15, 16, 41, 9, 206, DateTimeKind.Local).AddTicks(5849),
                             Email = "user@user.user",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -287,13 +287,35 @@ namespace SocialMedia.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@USER.USER",
                             NormalizedUserName = "USER@USER.USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFdu0PpErpEA6uSQbcmquJzr2AAu1iPazz417pIAPBGMND+q/jSpln0Lo+ovLMsbtQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHScSGLwamhY+faKDQ2kSvHKLrV2NLJ67zr9W/kg7Q8hMyJlW7dzGpU3YGTKqmPnWA==",
                             PhoneNumber = "987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2ddad748-0199-4b22-b4b9-58d7ad26b4f8",
+                            SecurityStamp = "895f4a60-15db-44c5-9721-fed1e997964a",
                             TwoFactorEnabled = false,
                             UserName = "user@user.user"
                         });
+                });
+
+            modelBuilder.Entity("SocialMedia.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("SocialMedia.Models.Comment", b =>
@@ -347,37 +369,16 @@ namespace SocialMedia.Migrations
                     b.Property<string>("applicationUserId")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("categoryId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("applicationUserId");
 
+                    b.HasIndex("categoryId");
+
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("SocialMedia.Models.Reaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("reactionType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -452,32 +453,24 @@ namespace SocialMedia.Migrations
                         .WithMany("Posts")
                         .HasForeignKey("applicationUserId");
 
+                    b.HasOne("SocialMedia.Models.Category", "category")
+                        .WithMany("Posts")
+                        .HasForeignKey("categoryId");
+
                     b.Navigation("applicationUser");
-                });
 
-            modelBuilder.Entity("SocialMedia.Models.Reaction", b =>
-                {
-                    b.HasOne("SocialMedia.Areas.Identity.Data.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SocialMedia.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Post");
+                    b.Navigation("category");
                 });
 
             modelBuilder.Entity("SocialMedia.Areas.Identity.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("SocialMedia.Models.Category", b =>
+                {
                     b.Navigation("Posts");
                 });
 

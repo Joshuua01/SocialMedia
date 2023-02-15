@@ -16,15 +16,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<Reaction> Reactions { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        //Maping Enum to String
         base.OnModelCreating(builder);
-        builder.Entity<Reaction>()
-            .Property(r => r.reactionType)
-            .HasConversion<string>();
 
         //Seed Data
 
