@@ -1,19 +1,22 @@
-﻿@model List<Post>
+﻿@model List<Category>
 @{
     ViewData["Title"] = "Home Page";
 
 }
 
 <div class="text-center md-col-8">
+    <div> 
+        <a asp-controller="Categories" asp-action="Create">Create Category</a>
+    </div>
     @{
-        foreach (var post in Model)
+        foreach (var category in Model)
         {
             <div class="card">
                 <div class="card-header">
-                    <h3><a asp-controller="Posts" asp-action="Index" asp-route-id="@post.Id">@post.Title</a></h3>
+                    <h3><a asp-controller="Categories" asp-action="Index" asp-route-id="@category.Id">@category.Name</a></h3>
                 </div>
                 <div class="card-body">
-                    <p>@post.Content</p>
+                    <p>@category.Description</p>
                 </div>
             </div>
         }   

@@ -36,7 +36,7 @@ namespace SocialMedia.Controllers
             {
                 return NotFound();
             }
-              return View(post);
+            return View(post);
         }
 
         // GET: Posts/Details/5
@@ -58,24 +58,25 @@ namespace SocialMedia.Controllers
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        [Route("Posts/Create/{CategoryId}")]
+        public IActionResult Create(int CategoryId)
         {
             return View();
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Post post)
+        [Route("Posts/Create/{CategoryId}")]
+        public async Task<IActionResult> Create(Post post, int CategoryId)
         {
             post.applicationUser = await _userManager.GetUserAsync(User);
+            post.category = await _context.Categories.FindAsync(CategoryId);
             if (ModelState.IsValid)
             {
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction("Index", "Categories", new { id = CategoryId });
             }
             else
             {
@@ -107,8 +108,6 @@ namespace SocialMedia.Controllers
         }
 
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,CreationDate")] Post post)

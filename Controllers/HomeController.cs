@@ -20,8 +20,8 @@ namespace SocialMedia.Controllers
 
         public IActionResult Index()
         {
-            var posts = _context.Posts.ToList();
-            return View(posts);
+            var categories = _context.Categories.ToList();
+            return View(categories);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

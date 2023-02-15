@@ -1,0 +1,22 @@
+﻿@model SocialMedia.Models.Category
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    <a asp-controller="Posts" asp-action="Create" asp-route-id="@Model.Id">Create Post</a>
+    if(Model.Posts.Count() > 0)
+    {
+        foreach (var item in Model.Posts)
+        {
+            <div>
+                <a asp-controller="Posts" asp-action="Index" asp-route-id="@item.Id">@item.Title</a> : @item.CreationDate
+            </div>
+        }
+    }
+    else
+    {
+        <div>No posts in this category yet.</div>
+    }
+}
