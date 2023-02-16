@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using SocialMedia.Areas.Identity.Data;
+using SocialMedia.Models;
 
 namespace SocialMedia.Areas.Identity.Pages.Account
 {

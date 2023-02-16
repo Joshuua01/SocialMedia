@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SocialMedia.Areas.Identity.Data;
-using SocialMedia.Data;
 using SocialMedia.Models;
 
 namespace SocialMedia.Controllers
@@ -25,14 +17,14 @@ namespace SocialMedia.Controllers
         }
 
         // GET: Comments
-        [Authorize("Admin")]
+
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Comments.ToListAsync());
+            return View(await _context.Comments.ToListAsync());
         }
 
         // GET: Comments/Details/5
-        [Authorize("Admin")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Comments == null)
@@ -62,7 +54,7 @@ namespace SocialMedia.Controllers
         [ValidateAntiForgeryToken]
         [Route("Comments/Create/{postId}")]
         public async Task<IActionResult> Create([Bind("Id,Content,CreationDate")] Comment comment, int postId)
-        { 
+        {
             comment.post = _context.Posts.FirstOrDefault(p => p.Id == postId);
             comment.applicationUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
@@ -157,14 +149,14 @@ namespace SocialMedia.Controllers
             {
                 _context.Comments.Remove(comment);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CommentExists(int id)
         {
-          return _context.Comments.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.Id == id);
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SocialMedia.Areas.Identity.Data;
-using SocialMedia.Models;
 using System.Reflection.Emit;
 
-namespace SocialMedia.Data;
+namespace SocialMedia.Models;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {

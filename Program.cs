@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SocialMedia.Areas.Identity.Data;
-using SocialMedia.Data;
+using SocialMedia.Models;
+
 namespace SocialMedia
 {
     public class Program
