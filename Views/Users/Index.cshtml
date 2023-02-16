@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using System;
 @model List<ApplicationUser>
+@inject UserManager<ApplicationUser> UserManager
+
 
 @{
     ViewData["Title"] = "Users";
@@ -23,6 +26,12 @@
                 <th>
                     Email
                 </th>
+                <th>
+                    UserName
+                </th>
+                <th>
+                    Role
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -43,7 +52,16 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | |
+                        @{
+                            var roles = UserManager.GetRolesAsync(item).Result;
+                            foreach (var role in roles)
+                            {
+                                <text>@role</text>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | 
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
