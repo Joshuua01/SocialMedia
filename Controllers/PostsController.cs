@@ -31,6 +31,11 @@ namespace SocialMedia.Controllers
             return View(post);
         }
 
+        public async Task<IActionResult> List()
+        {
+            return View(await _context.Posts.ToListAsync());
+        }
+
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -102,7 +107,7 @@ namespace SocialMedia.Controllers
         // POST: Posts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,CreationDate")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content")] Post post)
         {
             if (id != post.Id)
             {
@@ -127,7 +132,7 @@ namespace SocialMedia.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             return View(post);
         }
@@ -166,7 +171,7 @@ namespace SocialMedia.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(List));
         }
 
         private bool PostExists(int id)

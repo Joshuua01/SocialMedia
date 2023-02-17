@@ -315,7 +315,7 @@ namespace SocialMedia.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("SocialMedia.Models.Comment", b =>
@@ -344,7 +344,7 @@ namespace SocialMedia.Migrations
 
                     b.HasIndex("postId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("SocialMedia.Models.Post", b =>
@@ -378,7 +378,7 @@ namespace SocialMedia.Migrations
 
                     b.HasIndex("categoryId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
