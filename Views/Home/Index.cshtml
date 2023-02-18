@@ -5,13 +5,16 @@
 }
 
 <div class="text-center md-col-8">
-    <div> 
-        <a asp-controller="Categories" asp-action="Create">Create Category</a>
-    </div>
     @{
+        if (User.IsInRole("Admin")){
+        <div class="m-3">
+            <a asp-controller="Categories" asp-action="Create">Create Category</a>
+        </div>
+        }
+
         foreach (var category in Model)
         {
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
                     <h3><a asp-controller="Categories" asp-action="Index" asp-route-id="@category.Id">@category.Name</a></h3>
                 </div>

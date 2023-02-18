@@ -140,6 +140,28 @@ namespace SocialMedia.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Route("Users/ChangeRole/{id}")]
+        public async Task<IActionResult> ChangeRole(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                if (_userManager.IsInRoleAsync(user, "Admin").Result)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, "Admin");
+                    await _userManager.RemoveFromRoleAsync(user, "User");
+                    await _userManager.AddToRoleAsync(user, "User");
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(user, "Admin");
+                    await _userManager.RemoveFromRoleAsync(user, "User");
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
