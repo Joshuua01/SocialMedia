@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialMedia.Models;
 
@@ -10,9 +11,10 @@ using SocialMedia.Models;
 namespace SocialMedia.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230217224314_PostCommOnCascade")]
+    partial class PostCommOnCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.13");
@@ -46,14 +48,14 @@ namespace SocialMedia.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "d181cbdf-75b9-49cc-952f-400a27f12209",
+                            ConcurrencyStamp = "44eb985a-a588-45f7-83e4-0f75290d87ed",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7211",
-                            ConcurrencyStamp = "ab0a51fd-5551-4646-9d62-b9e8721103ef",
+                            ConcurrencyStamp = "ef8e37c9-aed5-44f1-af90-f796f810d1dd",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -258,8 +260,8 @@ namespace SocialMedia.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d5aab275-3df7-4fa6-a16a-e18089bbf0f1",
-                            CreationDate = new DateTime(2023, 2, 18, 10, 33, 52, 558, DateTimeKind.Local).AddTicks(6608),
+                            ConcurrencyStamp = "e80bb701-5abf-4001-bc17-378e9b03205c",
+                            CreationDate = new DateTime(2023, 2, 17, 23, 43, 14, 203, DateTimeKind.Local).AddTicks(8329),
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -267,10 +269,10 @@ namespace SocialMedia.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFhdLr8wYJ6k/t2lFtP213RSkSNQ5ORVY74URAl9nh3dNm95aWLEpxExsUkgZovd/w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEtHMGIjaOMvjLMNB4IIpTFUBrqU172AiMkYwPa4jHZdY3WZOQAgHXjd3hvCg8yEbQ==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5c3e9221-9acf-4251-8c2d-af721f61cf1b",
+                            SecurityStamp = "4144fc05-bdc7-4686-84f3-a0a17cb1644f",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.admin"
                         },
@@ -278,8 +280,8 @@ namespace SocialMedia.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5e58ff57-43d6-4042-af47-c9b2ce5075d9",
-                            CreationDate = new DateTime(2023, 2, 18, 10, 33, 52, 566, DateTimeKind.Local).AddTicks(3163),
+                            ConcurrencyStamp = "43d656f3-55f1-4c13-8c8a-44784e244edc",
+                            CreationDate = new DateTime(2023, 2, 17, 23, 43, 14, 211, DateTimeKind.Local).AddTicks(4188),
                             Email = "user@user.user",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -287,10 +289,10 @@ namespace SocialMedia.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@USER.USER",
                             NormalizedUserName = "USER@USER.USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKamDZcAtdvC7XnpIX1SGefj5XUPbk6oGu5HuWGkSwtEORxrCCDoQVr8GjoQaoOfjg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPMo1rNoLHEn25L0tRROzDCKvF4iphA2Dx3lYyoDfW1okHelOscA8sgpDAMqviTesQ==",
                             PhoneNumber = "987654321",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cda3830b-266b-4e0f-afba-9895503a52f7",
+                            SecurityStamp = "dce3b2f4-455e-4390-b091-c40937afb1a4",
                             TwoFactorEnabled = false,
                             UserName = "user@user.user"
                         });
@@ -456,8 +458,7 @@ namespace SocialMedia.Migrations
 
                     b.HasOne("SocialMedia.Models.Category", "category")
                         .WithMany("Posts")
-                        .HasForeignKey("categoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("categoryId");
 
                     b.Navigation("applicationUser");
 

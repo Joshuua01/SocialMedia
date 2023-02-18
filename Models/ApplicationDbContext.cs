@@ -19,6 +19,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
+        //Post Comment on delete cascade
+        builder.Entity<Post>()
+            .HasMany(p => p.Comments)
+            .WithOne(c => c.post)
+            .OnDelete(DeleteBehavior.Cascade);
+        //Category Post on delete cascade
+        builder.Entity<Category>()
+            .HasMany(c => c.Posts)
+            .WithOne(c => c.category)
+            .OnDelete(DeleteBehavior.Cascade);
+
         //Seed Data
 
         //Seed Roles
