@@ -71,26 +71,31 @@ namespace SocialMedia.Controllers
         }
 
         // GET: Comments/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Comments == null)
             {
                 return NotFound();
             }
-
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.Include("applicationUser").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
             if (comment == null)
             {
                 return NotFound();
             }
-            return View(comment);
+            if (_userManager.IsInRoleAsync(user, "Admin").Result || comment.applicationUser.Id == user.Id)
+            {
+                return View(comment);
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         // POST: Comments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Content")] Comment comment)
         {
             if (id != comment.Id)
@@ -100,10 +105,25 @@ namespace SocialMedia.Controllers
 
             if (ModelState.IsValid)
             {
+                var commentDb = await _context.Comments.Include("applicationUser").Include("post").FirstOrDefaultAsync(p => p.Id == id);
+                var user = await _userManager.GetUserAsync(User);
+                if (commentDb == null)
+                {
+                    return NotFound();
+                }
                 try
                 {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
+                    if (_userManager.IsInRoleAsync(user, "Admin").Result || commentDb.applicationUser.Id == user.Id)
+                    {
+                        commentDb.Content = comment.Content;
+                        _context.Update(commentDb);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return Forbid();
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,48 +136,66 @@ namespace SocialMedia.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if (_userManager.IsInRoleAsync(user, "Admin").Result)
+                {
+                    return RedirectToAction("List", "Posts");
+                }
+                return RedirectToAction("Index", "Posts", new { id = commentDb.post.Id });
             }
             return View(comment);
         }
 
         // GET: Comments/Delete/5
-        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Comments == null)
             {
                 return NotFound();
             }
-
-            var comment = await _context.Comments
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var comment = await _context.Comments.Include("applicationUser").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
             if (comment == null)
             {
                 return NotFound();
             }
-
-            return View(comment);
+            if (_userManager.IsInRoleAsync(user, "Admin").Result || comment.applicationUser.Id == user.Id)
+            {
+                return View(comment);
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Comments == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Comments'  is null.");
             }
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.Include("applicationUser").Include("post").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+            if (comment == null)
+            {
+                return NotFound();
+            }
             if (comment != null)
             {
                 _context.Comments.Remove(comment);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (_userManager.IsInRoleAsync(user, "Admin").Result)
+            {
+                return RedirectToAction("List", "Posts");
+            }
+            return RedirectToAction("Index", "Posts", new { id = comment.post.Id });
         }
 
         private bool CommentExists(int id)

@@ -45,6 +45,20 @@
                             Created: @Html.DisplayFor(modelItem => item.CreationDate)
                         </div>
                     </div>
+                    @{
+                        if(User.Identity.Name == item.applicationUser.UserName || User.IsInRole("Admin"))
+                        {
+                            <div class="d-flex justify-content-end">
+                                <div>
+                                    <a asp-controller="Comments" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                </div>
+                                <div> 
+                                  <span> </span><a asp-controller="Comments" asp-action="Delete" asp-route-id="@item.Id"> Delete</a>
+                                </div>
+                            </div>
+                        }
+                      }
+                    
                 </div>
             
             </div>

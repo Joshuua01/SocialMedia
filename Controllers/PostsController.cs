@@ -25,6 +25,7 @@ namespace SocialMedia.Controllers
         {
             var post = await _context.Posts
                 .Include(p => p.Comments)
+                .ThenInclude(p => p.applicationUser)
                 .Include(p => p.applicationUser)
                 .FirstOrDefaultAsync(m => m.Id == PostId);
             if (post == null)
