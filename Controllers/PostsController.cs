@@ -94,7 +94,7 @@ namespace SocialMedia.Controllers
         }
 
         // GET: Posts/Edit/5
-        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -102,50 +102,72 @@ namespace SocialMedia.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include("applicationUser").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
             if (post == null)
             {
                 return NotFound();
             }
-            return View(post);
+            if (_userManager.IsInRoleAsync(user, "Admin").Result || post.applicationUser.Id == user.Id)
+            {
+                return View(post);
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         // POST: Posts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content")] Post post)
         {
             if (id != post.Id)
             {
                 return NotFound();
             }
-
+            var postDb = await _context.Posts.Include("applicationUser").Include("category").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+            var CategoryId = postDb.category.Id;
             if (ModelState.IsValid)
             {
-                try
+                if (_userManager.IsInRoleAsync(user, "Admin").Result || postDb.applicationUser.Id == user.Id)
                 {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    try
+                    {
+                        postDb.Title = post.Title;
+                        postDb.Content = post.Content;
+                        _context.Posts.Update(postDb);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!PostExists(post.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!PostExists(post.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return Forbid();
                 }
-                return RedirectToAction(nameof(List));
+
+                if (_userManager.IsInRoleAsync(user, "Admin").Result)
+                {
+                    return RedirectToAction("List", "Posts");
+                }
+                return RedirectToAction("Index", "Posts", new { id = postDb.Id });
             }
             return View(post);
         }
 
         // GET: Posts/Delete/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -153,34 +175,57 @@ namespace SocialMedia.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            var post = await _context.Posts.Include("applicationUser").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (post == null || user == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            if (_userManager.IsInRoleAsync(user, "Admin").Result || post.applicationUser.Id == user.Id)
+            {
+                return View(post);
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Posts == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
             }
-            var post = await _context.Posts.FindAsync(id);
-            if (post != null)
+
+            var post = await _context.Posts.Include("applicationUser").Include("category").FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (post == null || user == null)
+            {
+                return NotFound();
+            }
+            var CategoryId = post.category.Id;
+            if (_userManager.IsInRoleAsync(user, "Admin").Result || post.applicationUser.Id == user.Id)
             {
                 _context.Posts.Remove(post);
-            }
+                await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(List));
+            }
+            else
+            {
+                return Forbid();
+            }
+            if (_userManager.IsInRoleAsync(user, "Admin").Result)
+            {
+                return RedirectToAction("List", "Posts");
+            }
+            return RedirectToAction("Index", "Categories", new { id = CategoryId });
         }
 
         private bool PostExists(int id)
