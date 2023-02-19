@@ -8,8 +8,6 @@
 
 
 <div class="text-center md-col-8">
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     <div class="card mb-3">
         <div class="card-header">
             <h3>@Html.DisplayFor(model => model.Title)</h3>
@@ -26,9 +24,20 @@
                      Created: @Html.DisplayFor(model => model.CreationDate)
                 </div>
             </div>
+            @if (User.IsInRole("Admin") || User.Identity.Name == Model.applicationUser.UserName)
+            {
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
+                    </div>
+                    <div>
+                        <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-
+    <h4> Comments </h4>
     @{
         foreach (var item in Model.Comments)
         {
